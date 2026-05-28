@@ -1,4 +1,4 @@
-package dev.brunohm.apiauth0jwt.dto;
+package dev.brunohm.apiauth0jwt.dto.response;
 
 import java.time.LocalDateTime;
 

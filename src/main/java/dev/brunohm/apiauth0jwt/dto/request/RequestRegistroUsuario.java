@@ -1,9 +1,12 @@
-package dev.brunohm.apiauth0jwt.dto;
+package dev.brunohm.apiauth0jwt.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public record RequestLoginUsuario(
+public record RequestRegistroUsuario(
+        @NotBlank
+        String nome,
+
         @Email
         @NotBlank
         String email,
