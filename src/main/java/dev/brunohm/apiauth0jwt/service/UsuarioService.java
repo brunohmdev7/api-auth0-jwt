@@ -3,6 +3,7 @@ package dev.brunohm.apiauth0jwt.service;
 import dev.brunohm.apiauth0jwt.entity.Usuario;
 import dev.brunohm.apiauth0jwt.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,6 +38,10 @@ public class UsuarioService {
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
         usuario.setAtivo(false);
         usuarioRepository.save(usuario);
+    }
+
+    public UserDetails encontrarPorLogin(String email) {
+        return usuarioRepository.findByEmail(email);
     }
 
 }
