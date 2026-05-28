@@ -50,7 +50,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    public ResponseEntity deletar(@PathVariable Long id) {
         usuarioService.desativar(id);
         return ResponseEntity.noContent().build();
     }
