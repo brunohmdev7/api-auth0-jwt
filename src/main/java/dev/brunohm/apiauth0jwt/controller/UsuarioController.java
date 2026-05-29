@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -24,23 +25,24 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<ResponseRegistroUsuario> criar(@RequestBody @Valid RequestRegistroUsuario dtoRequest) {
         Usuario novoUsuario = new Usuario(dtoRequest.nome(), dtoRequest.email(), dtoRequest.senha());
         usuarioService.salvar(novoUsuario);
 
-        ResponseRegistroUsuario dtoResponse = new ResponseRegistroUsuario(novoUsuario.getNome(), novoUsuario.getEmail(), LocalDateTime.now());
+        ResponseRegistroUsuario dtoResponse = new ResponseRegistroUsuario(novoUsuario.getId(), novoUsuario.getNome(), novoUsuario.getEmail(), LocalDateTime.now());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
     }
 
     @GetMapping
-    public ResponseEntity<ResponseListarUsuarios> listar() {
+    public ResponseEntity<Stream<ResponseListarUsuarios>> listar() {
         List<Usuario> usuarios = usuarioService.listar();
 
-        usuarios.forEach(u -> new ResponseListarUsuarios(u.getNome(), u.getEmail()));
+        var body = usuarios.stream()
+                .map(u -> new ResponseListarUsuarios(u.getId(), u.getNome(), u.getEmail()));
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(body);
     }
 
     @PutMapping("/{id}")

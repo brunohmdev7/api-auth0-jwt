@@ -1,4 +1,3 @@
 package dev.brunohm.apiauth0jwt.dto.response;
 
-public record ResponseListarUsuarios(String nome, String email) {
-}
+public record ResponseListarUsuarios(Long id, String nome, String email) {}
