@@ -10,6 +10,7 @@ import dev.brunohm.apiauth0jwt.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -20,14 +21,16 @@ import java.util.stream.Stream;
 @RequestMapping("/usuarios")
 public class UsuarioController {
     private final UsuarioService usuarioService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioController(UsuarioService usuarioService) {
+    public UsuarioController(UsuarioService usuarioService, PasswordEncoder passwordEncoder) {
         this.usuarioService = usuarioService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping
     public ResponseEntity<ResponseRegistroUsuario> criar(@RequestBody @Valid RequestRegistroUsuario dtoRequest) {
-        Usuario novoUsuario = new Usuario(dtoRequest.nome(), dtoRequest.email(), dtoRequest.senha());
+        Usuario novoUsuario = new Usuario(dtoRequest.nome(), dtoRequest.email(), passwordEncoder.encode(dtoRequest.senha()));
         usuarioService.salvar(novoUsuario);
 
         ResponseRegistroUsuario dtoResponse = new ResponseRegistroUsuario(novoUsuario.getId(), novoUsuario.getNome(), novoUsuario.getEmail(), LocalDateTime.now());
