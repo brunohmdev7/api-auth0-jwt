@@ -40,7 +40,7 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
 
-    public UserDetails encontrarPorLogin(String email) {
+    public UserDetails findByLogin(String email) {
         return usuarioRepository.findByEmail(email);
     }
 
